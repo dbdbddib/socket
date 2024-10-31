@@ -2,10 +2,7 @@ package com.ybh.websocket;
 
 import org.springframework.stereotype.Service;
 
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class ChatRoomService {
@@ -19,7 +16,7 @@ public class ChatRoomService {
         return newRoom;
     }
 
-    public ChatRoomDto findVByRoomId(String roomId) {
+    public ChatRoomDto findByRoomId(String roomId) {
         return chatRoomDtoMap.get(roomId);
     }
 
@@ -28,6 +25,6 @@ public class ChatRoomService {
     }
 
     public void deleteByRoomId(String roomId) {
-
+        chatRoomDtoMap.remove(roomId);
     }
 }

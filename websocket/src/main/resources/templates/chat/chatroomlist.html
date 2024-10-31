@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>채팅방 리스트</title>
+    <script language="JavaScript" src="/js/jquery-3.7.1.min.js"></script>
+</head>
+
+<script>
+    $(function(){
+
+    });
+
+    $.enterChatRoom = (roomId) => {
+        let writer = prompt('대화명을 입력하세요');
+        let url = `/chat/enter?roomId=${roomId}&writer=${writer}`;   // GET ? 와 &
+        // let url = `/chat/enter/${roomId}/${writer}`;    // GET 주소
+        document.location.href = url;
+    }
+
+    function enterChatRoom() {
+
+    }
+</script>
+<body>
+    <form method="post" action="/chat/create">
+        <label for="roomName">대화방 이름</label><input type="text" minlength="6" id="roomName" name="roomName" />
+        <input type="submit" value="채팅방 생성">
+    </form>
+    <ul>
+        <li>채팅방 제목</li>
+        {{#chatRoomList}}
+        <li onclick="$.enterChatRoom('{{roomId}}');">{{roomId}} : {{roomName}}</li>
+        {{/chatRoomList}}
+    </ul>
+</body>
+</html>

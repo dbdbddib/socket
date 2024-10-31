@@ -1,3 +1,18 @@
+server:
+  port: 8077
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+
 spring:
   application:
     name: websocket
+
+  # mustache
+  mustache:
+    enabled: true
+    charset: UTF-8
+    suffix": .html
+    check-template-location: true
