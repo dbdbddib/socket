@@ -20,8 +20,13 @@ public class ChatRoomController {
     }
 
     @PostMapping("/create")
-    public String createChatRoom(Model model, String roomName) {
-        this.chatRoomService.insert(roomName);
+    public String createChatRoom(Model model, String roomName, String writer) {
+        if (roomName != null && !roomName.isEmpty() && writer != null && !writer.isEmpty()) {
+            ChatRoomDto newRoom = this.chatRoomService.insert(roomName);
+            return "redirect:/chat/enter?roomId=" + newRoom.getRoomId() + "&writer=" + writer;
+        } else if (roomName != null && !roomName.isEmpty()) {
+            this.chatRoomService.insert(roomName);
+        }
         return "redirect:/chat/list";
     }
 

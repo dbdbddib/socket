@@ -31,15 +31,16 @@
             "msgType": "ENTER"
             , "roomId": "{{chatRoomDto.roomId}}"
             , "writer": writer
-            , "message": writer + " 님이 입장했습니다."
+            , "message": ""
         };
         webSocket.send(JSON.stringify(chatMessageDto));
     }
 
     webSocket.onmessage = function (param) {
         console.log(param.data);
+        let msgObj = JSON.parse(param.data);
         let msgUl = $("#msgUl");
-        let liHtml = `<li>${param.data}</li>`;
+        let liHtml = `<li><span>${msgObj.writer}</span> &nbsp; : &nbsp; <span>${msgObj.message}</span></li>`;
         msgUl.append(liHtml);
     }
 
@@ -50,7 +51,7 @@
             "msgType": "MESSAGE"
             , "roomId": "{{chatRoomDto.roomId}}"
             , "writer": writer
-            , "message": writer + ": " + message
+            , "message": message
         };
         webSocket.send(JSON.stringify(chatMessageDto));
     }

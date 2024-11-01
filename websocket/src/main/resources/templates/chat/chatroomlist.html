@@ -13,6 +13,9 @@
 
     $.enterChatRoom = (roomId) => {
         let writer = prompt('대화명을 입력하세요');
+        if (writer == null || writer == undefined || writer === '' || writer.length < 6) {
+            return;
+        }
         let url = `/chat/enter?roomId=${roomId}&writer=${writer}`;   // GET ? 와 &
         // let url = `/chat/enter/${roomId}/${writer}`;    // GET 주소
         document.location.href = url;
@@ -25,12 +28,13 @@
 <body>
     <form method="post" action="/chat/create">
         <label for="roomName">대화방 이름</label><input type="text" minlength="6" id="roomName" name="roomName" />
+        <label for="roomName">대와명</label><input type="text" minlength="6" id="writer" name="writer" />
         <input type="submit" value="채팅방 생성">
     </form>
     <ul>
         <li>채팅방 제목</li>
         {{#chatRoomList}}
-        <li onclick="$.enterChatRoom('{{roomId}}');">{{roomId}} : {{roomName}}</li>
+        <li onclick="$.enterChatRoom('{{roomId}}');">{{roomId}} : {{roomName}} ({{count}})</li>
         {{/chatRoomList}}
     </ul>
 </body>
