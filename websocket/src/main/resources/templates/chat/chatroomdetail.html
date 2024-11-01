@@ -21,7 +21,8 @@
 </html>
 
 <script>
-    let chatUrl = "ws://localhost:8077/ws/chat";
+    // let chatUrl = "ws://localhost:8077/ws/chat";
+    let chatUrl = "ws://{{hostUrl}}/ws/chat";
     let webSocket = new WebSocket(chatUrl);
 
     webSocket.onopen = function (param) {
@@ -46,6 +47,9 @@
 
     $.sendMessage = () => {
         let message = $("#message").val();
+        if (message == null || message === '') {
+            return;
+        }
         let writer = $("#writer").val();
         let chatMessageDto = {
             "msgType": "MESSAGE"

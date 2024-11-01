@@ -4,12 +4,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Component
@@ -53,7 +55,31 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
         for (WebSocketSession webSocketSession : sessionList) {
             try {
                 webSocketSession.sendMessage(tm);
-            } catch (IOException e) {
+            } catch (Exception e) {
+                log.error(e.toString());
+            }
+        }
+    }
+
+    @Override
+    public void handleTransportError(WebSocketSession session, Throwable exception) throws Exception {
+        log.debug("handleTransportError : {}", session.getId());
+    }
+
+    @Override
+    public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
+        log.debug("afterConnectionClosed : {}, {}", session.getId(), status);
+        List<ChatRoomDto> all = this.chatRoomService.findAll();
+        WebSocketSession findSession = null;
+        for (ChatRoomDto chatRoom : all) {
+            try {
+                Optional<WebSocketSession> find = chatRoom.getSessionList().stream().filter(x -> session == x).findAny();
+                findSession = find.orElse(null);
+                if (findSession != null) {
+                    chatRoom.getSessionList().remove(findSession);
+                    break;
+                }
+            } catch (Exception e) {
                 log.error(e.toString());
             }
         }
