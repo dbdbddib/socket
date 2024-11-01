@@ -21,7 +21,7 @@
 </html>
 
 <script>
-    let chatUrl = "ws://192.168.0.10:8077/ws/chat";
+    let chatUrl = "ws://localhost:8077/ws/chat";
     let webSocket = new WebSocket(chatUrl);
 
     webSocket.onopen = function (param) {
@@ -31,7 +31,7 @@
             "msgType": "ENTER"
             , "roomId": "{{chatRoomDto.roomId}}"
             , "writer": writer
-            , "message": ""
+            , "message": writer + " 님이 입장했습니다."
         };
         webSocket.send(JSON.stringify(chatMessageDto));
     }
@@ -50,7 +50,7 @@
             "msgType": "MESSAGE"
             , "roomId": "{{chatRoomDto.roomId}}"
             , "writer": writer
-            , "message": message
+            , "message": writer + ": " + message
         };
         webSocket.send(JSON.stringify(chatMessageDto));
     }
