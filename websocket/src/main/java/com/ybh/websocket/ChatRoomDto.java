@@ -18,9 +18,9 @@ import java.util.List;
 public class ChatRoomDto {
     private String roomName;
     private String roomId;
-    private final List<WebSocketSession> sessionList = new ArrayList<>();
+    private final List<ChatWebSocketSession> chatWebSocketSessions = new ArrayList<>();
 
     public Integer getCount() {
-        return sessionList.size();
+        return chatWebSocketSessions.size();
     }
 }

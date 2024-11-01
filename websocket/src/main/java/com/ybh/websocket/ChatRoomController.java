@@ -31,8 +31,8 @@ public class ChatRoomController {
             ChatRoomDto newRoom = this.chatRoomService.insert(roomName);
             String url = "redirect:/chat/enter?roomId=" + newRoom.getRoomId() + "&writer=" + URLEncoder.encode(writer, StandardCharsets.UTF_8);
             return url;
-        } else if (roomName != null && !roomName.isEmpty()) {
-            this.chatRoomService.insert(roomName);
+//        } else if (roomName != null && !roomName.isEmpty()) {
+//            this.chatRoomService.insert(roomName);
         }
         return "redirect:/chat/list";
     }

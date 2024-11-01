@@ -21,14 +21,23 @@
         document.location.href = url;
     }
 
-    function enterChatRoom() {
-
+    function checkValid() {
+        let roomName = $("#roomName").val();
+        let writer = $("#writer").val();
+        if (roomName === '' || roomName.length < 6) {
+            alert("대화방 이름을 6자 이상 입력하세요")
+            return false;
+        } else if (writer === '' || writer.length < 6) {
+            alert("대화명 이름을 6자 이상 입력하세요")
+            return false;
+        }
+        return true;
     }
 </script>
 <body>
-    <form method="post" action="/chat/create">
+    <form method="post" action="/chat/create" onsubmit="return checkValid();">
         <label for="roomName">대화방 이름</label><input type="text" minlength="6" id="roomName" name="roomName" />
-        <label for="roomName">대화명</label><input type="text" minlength="6" id="writer" name="writer" />
+        <label for="writer">대화명</label><input type="text" minlength="6" id="writer" name="writer" />
         <input type="submit" value="채팅방 생성">
     </form>
     <ul>
