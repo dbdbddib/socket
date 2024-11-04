@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>채팅방 {{stompRoomDto.roomName}}</title>
+    <script language="JavaScript" src="/js/jquery-3.7.1.min.js"></script>
+</head>
+
+<body>
+<h1>{{stompRoomDto.roomName}}</h1>
+<fieldset>
+    <label for="writer">대화명</label><input type="text" minlength="1" id="writer" name="writer" value="{{writer}}" readonly />
+    <label for="message">메세지</label><input type="text" minlength="1" id="message" name="message" />
+    <button onclick="$.sendMessage();">대화 전송</button>
+    <button onclick="$.outRoom();">대화방 나가기</button>
+</fieldset>
+<h3>채팅 내용</h3>
+<ul id="msgUl">
+</ul>
+</body>
+</html>
+
+<script>
+    // let stompUrl = "ws://localhost:8077/ws/stomp";
+    let stompUrl = "ws://{{hostUrl}}/ws/stomp";
+    let webSocket = new WebSocket(stompUrl);
+
+    webSocket.onopen = function (param) {
+        let message = $("#message").val();
+        let writer = $("#writer").val();
+        let stompMessageDto = {
+            "msgType": "ENTER"
+            , "roomId": "{{stompRoomDto.roomId}}"
+            , "writer": writer
+            , "message": ""
+        };
+        webSocket.send(JSON.stringify(stompMessageDto));
+    }
+
+    webSocket.onmessage = function (param) {
+        console.log(param.data);
+        let msgObj = JSON.parse(param.data);
+        let msgUl = $("#msgUl");
+        let liHtml = `<li><span>${msgObj.writer}</span> &nbsp; : &nbsp; <span>${msgObj.message}</span></li>`;
+        msgUl.append(liHtml);
+    }
+
+    $.sendMessage = () => {
+        let message = $("#message").val();
+        if (message == null || message === '') {
+            return;
+        }
+        let writer = $("#writer").val();
+        let stompMessageDto = {
+            "msgType": "MESSAGE"
+            , "roomId": "{{stompRoomDto.roomId}}"
+            , "writer": writer
+            , "message": message
+        };
+        webSocket.send(JSON.stringify(stompMessageDto));
+    }
+
+    $.outRoom = () => {
+        let message = $("#message").val();
+        let writer = $("#writer").val();
+        let stompMessageDto = {
+            "msgType": "OUT"
+            , "roomId": "{{stompRoomDto.roomId}}"
+            , "writer": writer
+            , "message": ""
+        };
+        webSocket.send(JSON.stringify(stompMessageDto));
+        webSocket.close();
+        document.location.href = "/stomp/list";
+    }
+</script>

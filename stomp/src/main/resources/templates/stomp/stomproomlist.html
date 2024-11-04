@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>채팅방 리스트</title>
+    <script language="JavaScript" src="/js/jquery-3.7.1.min.js"></script>
+</head>
+
+<script>
+    $(function(){
+
+    });
+
+    $.enterStompRoom = (roomId) => {
+        let writer = prompt('대화명을 입력하세요');
+        if (writer == null || writer == undefined || writer === '' || writer.length < 6) {
+            return;
+        }
+        let url = `/stomp/enter?roomId=${roomId}&writer=${writer}`;   // GET ? 와 &
+        // let url = `/stomp/enter/${roomId}/${writer}`;    // GET 주소
+        document.location.href = url;
+    }
+
+    function checkValid() {
+        let roomName = $("#roomName").val();
+        let writer = $("#writer").val();
+        if (roomName === '' || roomName.length < 6) {
+            alert("대화방 이름을 6자 이상 입력하세요")
+            return false;
+        } else if (writer === '' || writer.length < 6) {
+            alert("대화명 이름을 6자 이상 입력하세요")
+            return false;
+        }
+        return true;
+    }
+</script>
+<body>
+<form method="post" action="/stomp/create" onsubmit="return checkValid();">
+    <label for="roomName">대화방 이름</label><input type="text" minlength="6" id="roomName" name="roomName" />
+    <label for="writer">대화명</label><input type="text" minlength="6" id="writer" name="writer" />
+    <input type="submit" value="채팅방 생성">
+</form>
+<ul>
+    <li>채팅방 제목</li>
+    {{#stompRoomList}}
+    <li onclick="$.enterStompRoom('{{roomId}}');">{{roomId}} : {{roomName}} ({{count}})</li>
+    {{/stompRoomList}}
+</ul>
+</body>
+</html>
