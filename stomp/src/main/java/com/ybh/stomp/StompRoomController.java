@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 @Slf4j
 @Controller
@@ -22,7 +23,8 @@ public class StompRoomController {
 
     @GetMapping("/list")
     public String stompRoomList(Model model) {
-        model.addAttribute("stompRoomList", this.stompRoomService.findAll());
+        List<StompRoomDto> list = this.stompRoomService.findAll();
+        model.addAttribute("stompRoomList", list);
         return "stomp/stomproomlist";
     }
 

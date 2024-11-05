@@ -14,7 +14,9 @@ public class StompRoomService {
     public StompRoomDto insert(String roomName) {
         StompRoomDto newRoom = StompRoomDto.builder()
                 .roomId(UUID.randomUUID().toString())
-                .roomName(roomName).build();
+                .roomName(roomName)
+                .count(0)
+                .build();
         stompRoomDtoMap.put(newRoom.getRoomId(), newRoom);
         return newRoom;
     }

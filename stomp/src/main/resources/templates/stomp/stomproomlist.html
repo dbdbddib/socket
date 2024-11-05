@@ -35,16 +35,16 @@
     }
 </script>
 <body>
-<form method="post" action="/stomp/create" onsubmit="return checkValid();">
-    <label for="roomName">대화방 이름</label><input type="text" minlength="6" id="roomName" name="roomName" />
-    <label for="writer">대화명</label><input type="text" minlength="6" id="writer" name="writer" />
-    <input type="submit" value="채팅방 생성">
-</form>
-<ul>
-    <li>채팅방 제목</li>
-    {{#stompRoomList}}
-    <li onclick="$.enterStompRoom('{{roomId}}');">{{roomId}} : {{roomName}} ({{count}})</li>
-    {{/stompRoomList}}
-</ul>
+    <form method="post" action="/stomp/create" onsubmit="return checkValid();">
+        <label for="roomName">대화방 이름</label><input type="text" minlength="6" id="roomName" name="roomName" />
+        <label for="writer">대화명</label><input type="text" minlength="6" id="writer" name="writer" />
+        <input type="submit" value="채팅방 생성">
+    </form>
+    <ul>
+        <li>채팅방 제목</li>
+        {{#stompRoomList}}
+        <li onclick="$.enterStompRoom('{{roomId}}');">{{roomId}} : {{roomName}} ({{count}})</li>
+        {{/stompRoomList}}
+    </ul>
 </body>
 </html>
